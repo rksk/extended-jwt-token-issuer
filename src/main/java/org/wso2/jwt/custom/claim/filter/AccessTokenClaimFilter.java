@@ -24,6 +24,8 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
 
     private static final String CLAIM_FILTER_PARAMETER = "access_token_claims";
     private static final String AUDIENCE = "aud";
+    private static final String JTI = "jti";
+    private static final String SUB = "sub";
     private Algorithm signatureAlgorithm = null;
     private static final Log log = LogFactory.getLog(AccessTokenClaimFilter.class);
 
@@ -41,14 +43,23 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
     protected String buildJWTToken(OAuthTokenReqMessageContext request) throws IdentityOAuth2Exception {
 
         // Set claims to jwt token.
+        if (log.isDebugEnabled()) {
+            log.debug("Building JWT Access token.");
+        }
         JWTClaimsSet jwtClaimsSet = createJWTClaimSet(null, request, request.getOauth2AccessTokenReqDTO()
                 .getClientId());
         JWTClaimsSet.Builder jwtClaimsSetBuilder = new JWTClaimsSet.Builder(jwtClaimsSet);
 
         if (request.getScope() != null && Arrays.asList((request.getScope())).contains(AUDIENCE)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Adding audience value.");
+            }
             jwtClaimsSetBuilder.audience(Arrays.asList(request.getScope()));
         }
         jwtClaimsSet = jwtClaimsSetBuilder.build();
+        if (log.isDebugEnabled()) {
+            log.debug("JWT claims set for the default JWT Access token is built.");
+        }
         jwtClaimsSet = filterClaims(jwtClaimsSet, request);
         if (JWSAlgorithm.NONE.getName().equals(signatureAlgorithm.getName())) {
             return new PlainJWT(jwtClaimsSet).serialize();
@@ -59,16 +70,28 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
 
     private JWTClaimsSet filterClaims(JWTClaimsSet jwtClaimsSet, OAuthTokenReqMessageContext tokenReqMessageContext) {
 
+        if (log.isDebugEnabled()) {
+            log.debug("Filtering claims from the JWT Access token.");
+        }
         Builder filteredJWTClaimsSetBuilder = new Builder();
         String[] filterClaims = getFilterClaims(tokenReqMessageContext);
 
         if (isFilterClaimsProvided(filterClaims)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Filter claims provided: " + Arrays.asList(filterClaims));
+            }
             for (String filterClaim : filterClaims) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Adding the claim: " + filterClaim);
+                }
                 filteredJWTClaimsSetBuilder.claim(filterClaim, jwtClaimsSet.getClaim(filterClaim));
             }
-            filteredJWTClaimsSetBuilder.claim("jti", jwtClaimsSet.getJWTID());
+            setDefaultClaims(filteredJWTClaimsSetBuilder, jwtClaimsSet);
             return filteredJWTClaimsSetBuilder.build();
         } else {
+            if (log.isDebugEnabled()) {
+                log.debug("Filter claims are not provided.");
+            }
             return jwtClaimsSet;
         }
     }
@@ -92,5 +115,14 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
     private boolean isFilterClaimsProvided(String[] filterClaims) {
 
         return ArrayUtils.isNotEmpty(filterClaims) && StringUtils.isNotEmpty(filterClaims[0]);
+    }
+
+    private void setDefaultClaims(Builder filteredJWTClaimsSetBuilder, JWTClaimsSet jwtClaimsSet) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Adding default claims.");
+        }
+        filteredJWTClaimsSetBuilder.claim(JTI, jwtClaimsSet.getJWTID());
+        filteredJWTClaimsSetBuilder.claim(SUB, jwtClaimsSet.getSubject());
     }
 }
