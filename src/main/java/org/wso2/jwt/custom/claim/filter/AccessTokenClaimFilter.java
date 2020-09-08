@@ -94,7 +94,7 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
             return filteredJWTClaimsSetBuilder.build();
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("Filter claims are not provided.");
+                log.debug("Filter claims are not provided. Hence complete JWT token will be returned.");
             }
             return jwtClaimsSet;
         }
