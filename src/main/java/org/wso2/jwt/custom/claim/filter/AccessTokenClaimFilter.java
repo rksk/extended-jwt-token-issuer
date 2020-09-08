@@ -56,10 +56,12 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
             }
             jwtClaimsSetBuilder.audience(Arrays.asList(request.getScope()));
         }
+
         jwtClaimsSet = jwtClaimsSetBuilder.build();
         if (log.isDebugEnabled()) {
             log.debug("JWT claims set for the default JWT Access token is built.");
         }
+
         jwtClaimsSet = filterClaims(jwtClaimsSet, request);
         if (JWSAlgorithm.NONE.getName().equals(signatureAlgorithm.getName())) {
             return new PlainJWT(jwtClaimsSet).serialize();
@@ -80,6 +82,7 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
             if (log.isDebugEnabled()) {
                 log.debug("Filter claims provided: " + Arrays.asList(filterClaims));
             }
+
             for (String filterClaim : filterClaims) {
                 if (log.isDebugEnabled()) {
                     log.debug("Adding the claim: " + filterClaim);
@@ -87,6 +90,7 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
                 filteredJWTClaimsSetBuilder.claim(filterClaim, jwtClaimsSet.getClaim(filterClaim));
             }
             setDefaultClaims(filteredJWTClaimsSetBuilder, jwtClaimsSet);
+
             return filteredJWTClaimsSetBuilder.build();
         } else {
             if (log.isDebugEnabled()) {
@@ -106,9 +110,11 @@ public class AccessTokenClaimFilter extends JWTTokenIssuer {
                 filterClaims = requestParameter.getValue();
             }
         }
+
         if (ArrayUtils.isNotEmpty(filterClaims)) {
             filterClaims = filterClaims[0].trim().split(" ");
         }
+
         return filterClaims;
     }
 
