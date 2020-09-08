@@ -15,7 +15,9 @@ The claims to be filtered are provided as a POST parameter: **access_token_claim
 token_generator="org.wso2.jwt.custom.claim.filter.AccessTokenClaimFilter"
 ```
 4. Start/ Restart the server.
-5. Invoke the token endpoint providing the claims to be filtered. A sample request is provided below.
+5. Create an OAuth service provider in the WSO2 IS. Refer [Configuring OAuth2-OpenID Connect Single-Sign-On](https://is.docs.wso2.com/en/5.10.0/learn/configuring-oauth2-openid-connect-single-sign-on/) documentation to creating an OAuth service provider.
+6. Please note that the Token Issuer should be set to **Default** to use the custom JWT token issuer. 
+7. Invoke the token endpoint providing the claims to be filtered. A sample request is provided below.
 ```
 curl --location --request POST 'https://localhost:9443/oauth2/token' \
 --header 'Authorization: Basic b05vU2IxaHRwd0QwaWFhcERTSmRfaWlHQkh3YTpCaWJRZTdYMWJNVWVzamVBOWxCNVpCcTVYa2dh' \
@@ -26,5 +28,4 @@ curl --location --request POST 'https://localhost:9443/oauth2/token' \
 --data-urlencode 'scope=openid' \
 --data-urlencode 'access_token_claims=given_name family_name'
 ```
-6. Refer [Configuring OAuth2-OpenID Connect Single-Sign-On](https://is.docs.wso2.com/en/5.10.0/learn/configuring-oauth2-openid-connect-single-sign-on/) documentation to creating an OAuth service provider.
-7. Refer [OAuth 2.0 Grant Types](https://is.docs.wso2.com/en/5.10.0/learn/oauth-2.0-grant-types/) documentation to try out the OAuth2 grant types.
+8. Refer [OAuth 2.0 Grant Types](https://is.docs.wso2.com/en/5.10.0/learn/oauth-2.0-grant-types/) documentation to try out the OAuth2 grant types.
