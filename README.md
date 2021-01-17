@@ -1,4 +1,4 @@
-# extended-self-contained-token-issuer
+# extended-jwt-access-token-issuer
 
 The JWT self-contained access token and the ID token will contain the same set of claims by default. This is a custom, JWT self-contained token issuer, which can be used to filter out all the user claims from the JWT access token in WSO2 Identity Server.
 
