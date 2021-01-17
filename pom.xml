@@ -2,11 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.wso2.oidc.custom.claim</groupId>
-  <artifactId>org.wso2.jwt.custom.claim.filter</artifactId>
+  <groupId>org.wso2.custom.identity.oauth2</groupId>
+  <artifactId>org.wso2.custom.identity.oauth2.token</artifactId>
   <version>1.0</version>
   <packaging>bundle</packaging>
-  <name>org.wso2.jwt.custom.claim.filter</name>
+  <name>org.wso2.custom.identity.oauth2.token</name>
   <url>http://maven.apache.org</url>
 
     <build>
@@ -43,11 +43,11 @@
                         <Bundle-SymbolicName>${artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${artifactId}</Bundle-Name>
                         <Private-Package>
-                            org.wso2.jwt.custom.claim.filter.internal
+                            org.wso2.custom.identity.oauth2.token.internal
                         </Private-Package>
                         <Export-Package>
-                            !org.wso2.jwt.custom.claim.filter.internal,
-                            org.wso2.jwt.custom.claim.filter.*,
+                            !org.wso2.custom.identity.oauth2.token.internal,
+                            org.wso2.custom.identity.oauth2.token.*,
                         </Export-Package>
                         <Import-Package>
                             org.osgi.framework; version="${osgi.framework.imp.pkg.version.range}",

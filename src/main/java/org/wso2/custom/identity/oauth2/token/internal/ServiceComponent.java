@@ -1,4 +1,4 @@
-package org.wso2.jwt.custom.claim.filter.internal;
+package org.wso2.custom.identity.oauth2.token.internal;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,9 +12,9 @@ import org.wso2.carbon.user.core.service.RealmService;
  * interface="org.wso2.carbon.user.core.service.RealmService"
  * cardinality="1..1" policy="dynamic" bind="setRealmService" unbind="unsetRealmService"
  */
-public class AccessTokenClaimFilterComponent {
+public class ServiceComponent {
 
-    private static Log log = LogFactory.getLog(AccessTokenClaimFilterComponent.class);
+    private static Log log = LogFactory.getLog(ServiceComponent.class);
     private static RealmService realmService;
 
     protected void activate(ComponentContext ctxt) {
@@ -35,7 +35,7 @@ public class AccessTokenClaimFilterComponent {
 
     protected void setRealmService(RealmService realmService) {
 
-        AccessTokenClaimFilterComponent.realmService = realmService;
+        ServiceComponent.realmService = realmService;
         if (log.isDebugEnabled()) {
             log.debug("RealmService is set in the Custom JWT Access token builder bundle");
         }
@@ -43,7 +43,7 @@ public class AccessTokenClaimFilterComponent {
 
     protected void unsetRealmService(RealmService realmService) {
 
-        AccessTokenClaimFilterComponent.realmService = null;
+        ServiceComponent.realmService = null;
         if (log.isDebugEnabled()) {
             log.debug("RealmService is unset in the Custom JWT Access token builder bundle");
         }
@@ -51,7 +51,7 @@ public class AccessTokenClaimFilterComponent {
 
     public static RealmService getRealmService() {
 
-        return AccessTokenClaimFilterComponent.realmService;
+        return ServiceComponent.realmService;
     }
 
 }
